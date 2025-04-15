@@ -1,0 +1,7 @@
+# Environments
+.env
+# Repertoires
+logs/
+__pycache__/
+# fichiers MAC
+.DS_Store

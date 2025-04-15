@@ -1,0 +1,11 @@
+fastapi
+accelerate
+weaviate-client
+pydantic
+sentence-transformers
+langchain
+langchain-core
+langchain-community
+langchain-mistralai
+langchain-weaviate
+uvicorn[standard]
