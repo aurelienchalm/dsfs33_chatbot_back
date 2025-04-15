@@ -1,30 +1,26 @@
 FROM python:3.11-slim
 
-# Set up a new user named "user" with user ID 1000
+# Crée l'utilisateur
 RUN useradd -m -u 1000 user
 
-# Switch to the "user" user
 USER user
 
-# Set home to the user's home directory
 ENV HOME=/home/user \
-	PATH=/home/user/.local/bin:$PATH
+    PATH=/home/user/.local/bin:$PATH
 
-# Set the working directory to the user's home directory
 WORKDIR $HOME/app
 
-# Try and run pip command after setting the user with `USER user` to avoid permission issues with Python
+# Upgrade pip
 RUN pip install --no-cache-dir --upgrade pip
 
-# Copy the current directory contents into the container at $HOME/app setting the owner to the user
-COPY --chown=user *.py $HOME/app
-COPY --chown=user requirements.txt $HOME/app
+# Copie tout le contenu du projet dans /home/user/app
+COPY --chown=user . $HOME/app
 
-# Install any other Python dependencies (e.g., from requirements.txt)
+# Installer les dépendances
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
-# Expose the port we run on (7860)
+# Expose le port de FastAPI
 EXPOSE 7860
 
-# Lancer le serveur FastAPI avec Uvicorn
-CMD ["uvicorn", "main:app", "--reload", "--host", "0.0.0.0", "--port", "7860"]
+# Lancer FastAPI (avec --reload désactivé pour prod ; à garder pour dev uniquement)
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7860", "--reload"]
